@@ -1,62 +1,34 @@
-const { Schema, model, Types } = require('mongoose');
-const dateFormat = require('../utils/dateFormat');
+const { Schema, Types } = require('mongoose');
+const moment = require('moment');
 
-const ReplySchema = new Schema(
+const ReactionSchema = new Schema(
     {
-        replyId: {
+        reactionId: {
             type: Schema.Types.ObjectId,
             default: () => new Types.ObjectId()
         },
-        replyBody: {
+        reactionBody: {
             type: String,
             required: true,
-            trim: true
+            maxlength: 280
         },
-        writtenBy: {
+        username: {
             type: String,
             required: true
         },
         createdAt: {
             type: Date,
             default: Date.now,
-            get: createdAtVal => dateFormat(createdAtVal)
+            get: createdAtVal => moment(createdAtVal).format('MMMM Do YYYY, h:mm:ss a')
         }
     },
     {
         toJSON: {
             getters: true
-        }
+        },
+        id: false
     }
 );
 
-const CommentSchema = new Schema ({
-    writtenBy: {
-        type: String
-    },
-    commentBody: {
-        type: String,
-        required: true
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-        get: createdAtVal => dateFormat(createdAtVal)
-    },
-    replies: [ReplySchema]
-},
-{
-    toJSON: {
-        virtuals: true,
-        getters: true
-    },
-    id: false
-}
-);
 
-CommentSchema.virtual('replyCount').get(function() {
-    return this.replies.length;
-});
-
-const Comment = model('Comment', CommentSchema);
-
-module.exports = Comment;
+module.exports = ReactionSchema;
