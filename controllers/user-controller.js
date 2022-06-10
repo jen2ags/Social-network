@@ -79,40 +79,36 @@ const userController = {
                     res.status(404).json({ message: 'No user found with this id!' });
                     return;
                 }
-                res.json(dbPizzaData);
+                res.json(dbUserData);
             })
             .catch(err => res.status(400).json(err));
     },
 
     //create Friend
-    createFriend ({ body }, res) {
-        User.create(body)
-            .then(dbUserData => res.json(dbUserData))
+    createFriend({ params }, res) {
+        User.findOneAndUpdate(
+            { _id: params.id },
+            { $push: { friend: params.friendId }}, 
+            { new: true }
+            )
+            .then(dbUserData => {
+                if (!dbUserData) {
+                    res.status(404).json({ message: 'No user found with this id!' });
+                    return;
+                }
+                res.json(dbUserData);
+            })
             .catch(err => res.status(400).json(err));
-    },
-
-    addComment({ params }, res) {
-        User.create(body)
-        .then(({ _id }) => {
-            return Pizza.findOneAndUpdate(
-                { _id: params.pizzaId },
-                { $push: { comments: _id }},
-                { new: true }
-            );
-        })
-        .then(dbPizzaData => {
-            if (!dbPizzaData) {
-                res.status(404).json({ message: 'No pizza found with this id!' });
-                return;
-            }
-            res.json(dbPizzaData);
-        })
-        .catch(err => res.json(err));
+            
     },
 
     //delete Friend
-    deleteUser({ params }, res) {
-        User.findOneAndDelete({ _id: params.id })
+    deleteFriend({ params }, res) {
+        User.findOneAndUpdate(
+            { _id: params.id },
+            { $pull: { friend: params.friendId }},
+            {new: true }
+            )
             .then(dbUserData => {
                 if (!dbUserData) {
                     res.status(404).json({ message: 'No user found with this id!' });
@@ -128,7 +124,3 @@ const userController = {
 
 
 module.exports = userController;
-
-
-createFriend,
-    deleteFriend
