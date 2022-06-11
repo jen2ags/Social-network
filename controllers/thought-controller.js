@@ -22,20 +22,13 @@ const thoughtController = {
 
     //get one thought by id
     getThoughtById({ params }, res) {
-        Thought.findOne({ _id: params.thoughtId })
-            .populate(
-                {
-                    path: 'reactions',
-                    select: '-__v'
-                }
-            )
-            .select('-__v')
-            .then(dbUserData => {
+        Thought.findOne({ _id: params.id })
+            .then((dbUserData) => {
                 if (!dbUserData) {
                     res.status(404).json({ message: 'No thought found with this id!' });
                     return;
                 }
-                res.json(dbThoughtData);
+                res.json(dbUserData);
             })
             .catch(err => {
                 console.log(err);
