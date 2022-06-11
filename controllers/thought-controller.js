@@ -52,24 +52,23 @@ const thoughtController = {
     },
 
     //create thought
-    createThought({ params, body }, res) {
-        Thought.create(body)
-            .then(({ _id }) => {
+    createThought(req, res) {
+        Thought.create(req.body)
+            .then((dbThoughtData) => {
                 return User.findOneAndUpdate(
-                    { _id: params.userId },
-                    { $push: { thoughts: _id } },
+                    { _id: req.body.userId },
+                    { $push: { thoughts: dbThoughtData._id } },
                     { new: true }
                 );
             })
-            .then(dbThoughtData => {
-                if (!dbThoughtData) {
-                    res.status(404).json({ message: 'No thought found with this id!' });
-                    return;
+            .then(dbUserData => {
+                if (!dbUserData) {
+                    return res.status(404).json({ message: 'No thought found with this id!' });
                 }
-                res.json(dbThoughtData)
+                res.json( {message: 'Thought successfully created!'});
 
             })
-            .catch(err => res.status(400).json(err));
+            .catch(err => res.status(500).json(err));
     },
 
     //update user by id

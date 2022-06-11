@@ -119,7 +119,7 @@ const userController = {
     //delete Friend
     deleteFriend({ params }, res) {
         User.findOneAndUpdate(
-            { _id: params.id },
+            { _id: params.userId },
             { $pull: { friend: params.friendId }},
             {new: true }
             )
@@ -128,7 +128,7 @@ const userController = {
                     res.status(404).json({ message: 'No user found with this id!' });
                     return;
                 }
-                res.json(dbPizzaData);
+                res.json( { message: 'Your friend has been deleted!'});
             })
             .catch(err => res.status(400).json(err));
     },
