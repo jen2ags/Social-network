@@ -117,20 +117,24 @@ const userController = {
     },
 
     //delete Friend
-    deleteFriend({ params }, res) {
-        User.findOneAndUpdate(
+    deleteFriend: async function({ params }, res) {
+        let deletedFriend = await User.findOneAndUpdate(
             { _id: params.userId },
-            { $pull: { friend: params.friendId }},
-            {new: true }
-            )
-            .then(dbUserData => {
-                if (!dbUserData) {
-                    res.status(404).json({ message: 'No user found with this id!' });
-                    return;
-                }
-                res.json( { message: 'Your friend has been deleted!'});
-            })
-            .catch(err => res.status(400).json(err));
+            { $pull: { friends: params.friendId }},
+            {new: true })
+            .populate (
+                {
+                    path: 'friends',
+                    select: '-__v'
+                })
+            .populate (
+                {
+                    path: 'thoughts',
+                    select: '-__v'
+                })
+                .select('-__v');
+            
+            res.json( { message: "Friend deleted!", deletedFriend});
     },
 
 };
