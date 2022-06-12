@@ -11,7 +11,7 @@ The purpose of this application is to create a database that can hold a large am
 
 
 ## How it Works
-![Screencastify-social-network]()
+![Screencastify-social-network](https://github.com/jen2ags/Social-network/blob/main/assets/video/social-network%20walkthrough.webm)
 
 ## Screen Shot
 ![Screenshot insomnia](https://github.com/jen2ags/Social-network/blob/main/assets/images/Insomnia.png)
