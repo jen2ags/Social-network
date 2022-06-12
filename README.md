@@ -14,7 +14,7 @@ The purpose of this application is to create a database that can hold a large am
 ![Screencastify-social-network]()
 
 ## Screen Shot
-![Screenshot insomnia]()
+![Screenshot insomnia](https://github.com/jen2ags/Social-network/blob/main/assets/images/Insomnia.png)
 
 ## Installation
 To install this application, run the following commands in the terminal:
